@@ -1,0 +1,29 @@
+{
+  "name": "objections_lat",
+  "version": "1.0.0",
+  "description": "This is objection repo",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon index",
+    "start": "cross-env NODE_ENVIRONMENT=production node index",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Helfi Pangestu",
+  "license": "ISC",
+  "dependencies": {
+    "@koa/cors": "^2.2.2",
+    "cross-env": "^5.2.0",
+    "knex": "^0.15.2",
+    "koa": "^2.6.2",
+    "koa-bodyparser": "^4.2.1",
+    "koa-helmet": "^4.0.0",
+    "koa-logger": "^3.2.0",
+    "koa-respond": "^2.1.0",
+    "koa-router": "^7.4.0",
+    "mysql": "^2.16.0",
+    "objection": "^1.4.0"
+  },
+  "devDependencies": {
+    "nodemon": "^1.18.6"
+  }
+}
