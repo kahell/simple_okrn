@@ -16,7 +16,6 @@ class Person extends Model {
         firstName: { type: "string", minLength: 1, maxLength: 255 },
         lastName: { type: "string", minLength: 1, maxLength: 255 },
         age: { type: "number" },
-
         address: {
           type: "object",
           properties: {
