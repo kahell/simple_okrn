@@ -5,9 +5,9 @@
 <a href="#" rel="nofollow"><img src="https://camo.githubusercontent.com/aa6cd44c832344c7b6e5edfc8524c46d4bec971b/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f446f6e6174652d50617950616c2d677265656e2e7376673f6d61784167653d363030" alt="Donate" data-canonical-src="https://img.shields.io/badge/Donate-PayPal-green.svg?maxAge=600" style="max-width:100%;"></a>
 </p>
 
-## Simple MERN
+## Simple OKRN
 
-Okrn is a stack Objection js, Koa js, React js, and Node js. This repo build an CRUD Person, fav Movies, and Pets.
+Simple Okrn is a stack Objection js, Koa js, React js, and Node js. This repo build an CRUD Person, fav Movies, and Pets.
 
 ```
 Persons
@@ -30,6 +30,8 @@ Movies
 
 - Clone this repository
 - npm install
+- npm i knex -g <- To install knex in global
+- knex migrate:latest
 - npm run dev
 - Open your browser and type http://localhost:3000
 
