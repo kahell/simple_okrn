@@ -1,4 +1,5 @@
 const BodyParser = require("koa-bodyparser");
+const passport = require("koa-passport");
 const respond = require("koa-respond");
 const Router = require("koa-router");
 const Logger = require("koa-logger");
@@ -36,6 +37,11 @@ app.use(
 );
 
 app.use(respond());
+
+// authentication
+require("./src/server/config/auth");
+app.use(passport.initialize());
+app.use(passport.session());
 
 // API routes
 require("./src/server/routes")(router);

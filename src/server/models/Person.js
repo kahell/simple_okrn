@@ -13,6 +13,7 @@ class Person extends Model {
       properties: {
         id: { type: "integer" },
         parentId: { type: ["integer", "null"] },
+        userId: { type: ["integer", "null"] },
         firstName: { type: "string", minLength: 1, maxLength: 255 },
         lastName: { type: "string", minLength: 1, maxLength: 255 },
         age: { type: "number" },

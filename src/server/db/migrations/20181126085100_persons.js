@@ -7,6 +7,12 @@ exports.up = function(knex, Promise) {
       .references("id")
       .inTable("persons")
       .onDelete("SET NULL");
+    table
+      .integer("userId")
+      .unsigned()
+      .references("id")
+      .inTable("users")
+      .onDelete("CASCADE");
     table.string("firstName");
     table.string("lastName");
     table.integer("age");
