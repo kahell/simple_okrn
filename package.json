@@ -4,8 +4,8 @@
   "description": "This is objection repo",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon index",
-    "start": "cross-env NODE_ENVIRONMENT=production node index",
+    "dev": "cross-env NODE_ENV=development nodemon index",
+    "start": "cross-env NODE_ENV=production node index",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Helfi Pangestu",
@@ -14,6 +14,7 @@
     "@koa/cors": "^2.2.2",
     "bcryptjs": "^2.4.3",
     "cross-env": "^5.2.0",
+    "jsonwebtoken": "^8.4.0",
     "knex": "^0.15.2",
     "koa": "^2.6.2",
     "koa-bodyparser": "^4.2.1",
@@ -25,9 +26,15 @@
     "koa-session": "^5.10.0",
     "mysql": "^2.16.0",
     "objection": "^1.4.0",
-    "passport-local": "^1.0.0"
+    "passport": "^0.4.0",
+    "passport-jwt": "^4.0.0",
+    "passport-local": "^1.0.0",
+    "validator": "^10.9.0"
   },
   "devDependencies": {
+    "eslint": "^5.9.0",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-import": "^2.14.0",
     "nodemon": "^1.18.6"
   }
 }

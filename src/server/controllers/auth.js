@@ -1,7 +1,13 @@
 const { transaction } = require("objection");
-const passport = require("koa-passport");
-const Users = require("../models/Users");
+const keys = require("../config/keys");
+const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
+
+// Load User Model
+const Users = require("../models/Users");
+
+// Load Input Validation
+const validateLoginInput = require("../validations/login");
 
 async function register(ctx, next) {
   var user = null;
@@ -11,15 +17,10 @@ async function register(ctx, next) {
     const hash = bcrypt.hashSync(graph.password, salt);
     // Change password
     graph.password = hash;
-    // It's a good idea to wrap `insertGraph` call in a transaction since it
-    // may create multiple queries.
     user = await transaction(Users.knex(), trx => {
-      return (
-        Users.query(trx)
-          // For security reasons, limit the relations that can be inserted.
-          .allowInsert("[persons]")
-          .insertGraph(graph)
-      );
+      return Users.query(trx)
+        .allowInsert("[persons]")
+        .insertGraph(graph);
     });
   } catch (err) {
     ctx.status = err.status || 500;
@@ -32,19 +33,74 @@ async function register(ctx, next) {
   }
 
   ctx.status = 200;
-  ctx.body = { message: "success" };
+  ctx.body = {
+    message: "success",
+    data: user
+  };
+}
 
-  //   return passport.authenticate("local", (err, user, info, status) => {
-  //     if (user) {
-  //       ctx.login(user);
-  //       ctx.redirect("/auth/status");
-  //     } else {
-  //       ctx.status = 400;
-  //       ctx.body = { status: "error" };
-  //     }
-  //   })(ctx);
+async function login(ctx, next) {
+  const { errors, isValid } = validateLoginInput(ctx.request.body);
+  return (ctx.body = {
+    status: false,
+    data: ctx.request.body
+  });
+  // Check Validation
+  if (!isValid) {
+    ctx.status = 400;
+    return (ctx.body = {
+      status: false,
+      data: errors
+    });
+  }
+
+  const username = ctx.request.body.username;
+  const password = ctx.request.body.password;
+
+  // Find user by email
+  const user = await Users.query()
+    .select("*")
+    .where("username", "=", username);
+
+  if (!user.length) {
+    errors.username = "User not found";
+    ctx.status = 400;
+    return (ctx.body = {
+      status: false,
+      data: errors
+    });
+  }
+
+  // Check Password
+  const isMatch = await bcrypt.compare(password, user[0].password);
+
+  if (isMatch) {
+    // User Matched
+    const payload = {
+      id: user[0].id,
+      username: user[0].username,
+      avatar: user[0].avatar
+    }; // Create JWT Payload
+
+    // Sign Token
+    var token = await jwt.sign(payload, keys.secretOrKey, {
+      expiresIn: 3600
+    });
+    return (ctx.body = {
+      success: true,
+      token: "Bearer " + token
+    });
+  } else {
+    errors.password = "Password incorect";
+    ctx.status = 400;
+    return (ctx.body = {
+      status: false,
+      data: errors
+    });
+  }
 }
 
 module.exports = {
-  register
+  register,
+  login
 };

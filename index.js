@@ -1,6 +1,6 @@
 const BodyParser = require("koa-bodyparser");
-const passport = require("koa-passport");
 const respond = require("koa-respond");
+const passport = require("koa-passport");
 const Router = require("koa-router");
 const Logger = require("koa-logger");
 const Helmet = require("koa-helmet");
@@ -10,24 +10,23 @@ const Koa = require("koa");
 const router = new Router();
 const app = new Koa();
 
+// Initialize knex.
 const knexConfig = require("./knexfile");
 const { Model } = require("objection");
 const Knex = require("knex");
 
-// Initialize knex.
 const knex = Knex(knexConfig.development);
 Model.knex(knex); // Only One DB
 
+// Initialize Koa
 app.use(Helmet());
-
 if (process.env.NODE_ENV === "development") {
   app.use(Logger());
 }
-
 app.use(Cors());
 app.use(
   BodyParser({
-    enableTypes: ["json"],
+    enableTypes: ["json", "form"],
     jsonLimit: "5mb",
     strict: true,
     onerror: function(err, ctx) {
@@ -35,13 +34,13 @@ app.use(
     }
   })
 );
-
 app.use(respond());
 
-// authentication
-require("./src/server/config/auth");
+// Passport Initialize
 app.use(passport.initialize());
-app.use(passport.session());
+
+// Passport Config
+require("./src/server/config/passport")(passport);
 
 // API routes
 require("./src/server/routes")(router);

@@ -1,0 +1,3 @@
+module.exports = {
+  secretOrKey: "insert_your_key_secret"
+};

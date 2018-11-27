@@ -4,5 +4,6 @@ const router = new Router();
 
 // Movie
 router.post("/register", c_auth.register);
+router.post("/login", c_auth.login);
 
 module.exports = router.routes();
